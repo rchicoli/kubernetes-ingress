@@ -7,6 +7,9 @@ metadata:
     nginx.org/proxy-read-timeout: "20s"
     nginx.org/client-max-body-size: "4m"
     nginx.org/auth-basic: "off"
+    nginx.org/additional-configuration: |
+      ssl_verify_client: optional
+      ssl_dhparam: /etc/ssl/private/dhparams.pem
 spec:
   rules:
   - host: cafe.example.com
@@ -14,7 +17,7 @@ spec:
       paths:
       - path: /tea
         backend:
-          serviceName: tea-svc
+          serviceName: tea-rc
           servicePort: 80
       - path: /coffee
         backend:

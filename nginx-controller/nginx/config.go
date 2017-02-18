@@ -2,6 +2,7 @@ package nginx
 
 // Config holds NGINX configuration parameters
 type Config struct {
+	AdditionalConfiguration       map[string]string
 	AuthBasic                     string
 	AuthBasicUserFile             string
 	ServerTokens                  bool
@@ -46,5 +47,6 @@ func NewDefaultConfig() *Config {
 		MainServerNamesHashMaxSize: "512",
 		ProxyBuffering:             true,
 		HSTSMaxAge:                 2592000,
+		AdditionalConfiguration:    make(map[string]string),
 	}
 }

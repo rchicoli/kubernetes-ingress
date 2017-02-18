@@ -108,19 +108,20 @@ func (cnf *Configurator) generateNginxCfg(ingEx *IngressEx, pems map[string]stri
 		}
 
 		server := Server{
-			Name:                  serverName,
-			ServerTokens:          ingCfg.ServerTokens,
-			HTTP2:                 ingCfg.HTTP2,
-			RedirectToHTTPS:       ingCfg.RedirectToHTTPS,
-			ProxyProtocol:         ingCfg.ProxyProtocol,
-			HSTS:                  ingCfg.HSTS,
-			HSTSMaxAge:            ingCfg.HSTSMaxAge,
-			HSTSIncludeSubdomains: ingCfg.HSTSIncludeSubdomains,
-			RealIPHeader:          ingCfg.RealIPHeader,
-			SetRealIPFrom:         ingCfg.SetRealIPFrom,
-			RealIPRecursive:       ingCfg.RealIPRecursive,
-			ProxyHideHeaders:      ingCfg.ProxyHideHeaders,
-			ProxyPassHeaders:      ingCfg.ProxyPassHeaders,
+			Name:                    serverName,
+			ServerTokens:            ingCfg.ServerTokens,
+			HTTP2:                   ingCfg.HTTP2,
+			RedirectToHTTPS:         ingCfg.RedirectToHTTPS,
+			ProxyProtocol:           ingCfg.ProxyProtocol,
+			HSTS:                    ingCfg.HSTS,
+			HSTSMaxAge:              ingCfg.HSTSMaxAge,
+			HSTSIncludeSubdomains:   ingCfg.HSTSIncludeSubdomains,
+			RealIPHeader:            ingCfg.RealIPHeader,
+			SetRealIPFrom:           ingCfg.SetRealIPFrom,
+			RealIPRecursive:         ingCfg.RealIPRecursive,
+			ProxyHideHeaders:        ingCfg.ProxyHideHeaders,
+			ProxyPassHeaders:        ingCfg.ProxyPassHeaders,
+			AdditionalConfiguration: ingCfg.AdditionalConfiguration,
 		}
 
 		if pemFile, ok := pems[serverName]; ok {
@@ -160,19 +161,20 @@ func (cnf *Configurator) generateNginxCfg(ingEx *IngressEx, pems map[string]stri
 
 	if len(ingEx.Ingress.Spec.Rules) == 0 && ingEx.Ingress.Spec.Backend != nil {
 		server := Server{
-			Name:                  emptyHost,
-			ServerTokens:          ingCfg.ServerTokens,
-			HTTP2:                 ingCfg.HTTP2,
-			RedirectToHTTPS:       ingCfg.RedirectToHTTPS,
-			ProxyProtocol:         ingCfg.ProxyProtocol,
-			HSTS:                  ingCfg.HSTS,
-			HSTSMaxAge:            ingCfg.HSTSMaxAge,
-			HSTSIncludeSubdomains: ingCfg.HSTSIncludeSubdomains,
-			RealIPHeader:          ingCfg.RealIPHeader,
-			SetRealIPFrom:         ingCfg.SetRealIPFrom,
-			RealIPRecursive:       ingCfg.RealIPRecursive,
-			ProxyHideHeaders:      ingCfg.ProxyHideHeaders,
-			ProxyPassHeaders:      ingCfg.ProxyPassHeaders,
+			Name:                    emptyHost,
+			ServerTokens:            ingCfg.ServerTokens,
+			HTTP2:                   ingCfg.HTTP2,
+			RedirectToHTTPS:         ingCfg.RedirectToHTTPS,
+			ProxyProtocol:           ingCfg.ProxyProtocol,
+			HSTS:                    ingCfg.HSTS,
+			HSTSMaxAge:              ingCfg.HSTSMaxAge,
+			HSTSIncludeSubdomains:   ingCfg.HSTSIncludeSubdomains,
+			RealIPHeader:            ingCfg.RealIPHeader,
+			SetRealIPFrom:           ingCfg.SetRealIPFrom,
+			RealIPRecursive:         ingCfg.RealIPRecursive,
+			ProxyHideHeaders:        ingCfg.ProxyHideHeaders,
+			ProxyPassHeaders:        ingCfg.ProxyPassHeaders,
+			AdditionalConfiguration: ingCfg.AdditionalConfiguration,
 		}
 
 		if pemFile, ok := pems[emptyHost]; ok {
@@ -204,6 +206,27 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 			ingCfg.ServerTokens = serverTokens
 		}
 	}
+
+	// ingCfg.AdditionalConfiguration := make(map[string]string)
+	var line []string
+	if additionalConfiguration, exists := ingEx.Ingress.Annotations["nginx.org/additional-configuration"]; exists {
+		for _, v := range strings.Split(additionalConfiguration, "\n") {
+			if v != "" {
+				line = strings.Split(v, ": ")
+				ingCfg.AdditionalConfiguration[line[0]] = line[1]
+			}
+		}
+	}
+
+	// if additionalConfiguration, exists := ingEx.Ingress.Annotations["nginx.org/additional-configuration"]; exists {
+	// 	slice := strings.Split(additionalConfiguration, ": ")
+	// 	ingCfg.AdditionalConfiguration[slice[0]] = slice[1]
+	// }
+	// if str, exists := m[key]; exists {
+	// 	slice := strings.Split(str, ",")
+	// 	return slice, exists, nil
+	// }
+
 	if proxyConnectTimeout, exists := ingEx.Ingress.Annotations["nginx.org/proxy-connect-timeout"]; exists {
 		ingCfg.ProxyConnectTimeout = proxyConnectTimeout
 	}

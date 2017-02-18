@@ -40,6 +40,11 @@ server {
 	}
 	{{- end}}
 
+	{{- if $server.AdditionalConfiguration}}
+	{{range $key, $value := $server.AdditionalConfiguration}}
+	{{$key}} {{$value}};{{end}}
+	{{- end}}
+
 	{{range $location := $server.Locations}}
 	location {{$location.Path}} {
 		proxy_http_version 1.1;
