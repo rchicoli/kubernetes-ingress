@@ -40,6 +40,7 @@ type UpstreamServer struct {
 
 // Server describes an NGINX server
 type Server struct {
+	ServerSnippets        map[int]string
 	Name                  string
 	ServerTokens          bool
 	Locations             []Location
@@ -63,6 +64,7 @@ type Server struct {
 
 // Location describes an NGINX location
 type Location struct {
+	LocationSnippets     map[int]string
 	AuthBasic            string
 	AuthBasicUserFile    string
 	Path                 string

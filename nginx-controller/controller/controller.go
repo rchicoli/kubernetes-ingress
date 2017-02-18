@@ -522,6 +522,11 @@ func (lbc *LoadBalancerController) syncCfgm(key string) {
 		if authBasicUserFile, exists := cfgm.Data["auth-basic-user-file"]; exists {
 			cfg.AuthBasicUserFile = authBasicUserFile
 		}
+
+		// if additionalConfiguration, exists := cfgm.Data["additional-configuration"]; exists {
+		// 	slice := strings.Split(additionalConfiguration, ": ")
+		// 	cfg.AdditionalConfiguration[slice[0]] = slice[1]
+		// }
 	}
 	lbc.cnf.UpdateConfig(cfg)
 
