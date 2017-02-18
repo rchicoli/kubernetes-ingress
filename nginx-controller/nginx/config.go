@@ -2,6 +2,8 @@ package nginx
 
 // Config holds NGINX configuration parameters
 type Config struct {
+	AuthBasic                     string
+	AuthBasicUserFile             string
 	ServerTokens                  bool
 	ProxyConnectTimeout           string
 	ProxyReadTimeout              string

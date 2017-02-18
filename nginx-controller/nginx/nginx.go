@@ -63,6 +63,8 @@ type Server struct {
 
 // Location describes an NGINX location
 type Location struct {
+	AuthBasic            string
+	AuthBasicUserFile    string
 	Path                 string
 	Upstream             Upstream
 	ProxyConnectTimeout  string

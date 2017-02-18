@@ -405,7 +405,7 @@ func (lbc *LoadBalancerController) syncCfgm(key string) {
 				cfg.HTTP2 = HTTP2
 			}
 		}
-		if redirectToHTTPS, exists,err := nginx.GetMapKeyAsBool(cfgm.Data, "redirect-to-https", cfgm); exists {
+		if redirectToHTTPS, exists, err := nginx.GetMapKeyAsBool(cfgm.Data, "redirect-to-https", cfgm); exists {
 			if err != nil {
 				glog.Error(err)
 			} else {
@@ -514,6 +514,13 @@ func (lbc *LoadBalancerController) syncCfgm(key string) {
 		}
 		if proxyMaxTempFileSize, exists := cfgm.Data["proxy-max-temp-file-size"]; exists {
 			cfg.ProxyMaxTempFileSize = proxyMaxTempFileSize
+		}
+
+		if authBasic, exists := cfgm.Data["auth-basic"]; exists {
+			cfg.AuthBasic = authBasic
+		}
+		if authBasicUserFile, exists := cfgm.Data["auth-basic-user-file"]; exists {
+			cfg.AuthBasicUserFile = authBasicUserFile
 		}
 	}
 	lbc.cnf.UpdateConfig(cfg)
