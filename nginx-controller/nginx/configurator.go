@@ -289,6 +289,14 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 	if proxyMaxTempFileSize, exists := ingEx.Ingress.Annotations["nginx.org/proxy-max-temp-file-size"]; exists {
 		ingCfg.ProxyMaxTempFileSize = proxyMaxTempFileSize
 	}
+
+	if authBasic, exists := ingEx.Ingress.Annotations["nginx.org/auth-basic"]; exists {
+		ingCfg.AuthBasic = authBasic
+	}
+	if authBasicUserFile, exists := ingEx.Ingress.Annotations["nginx.org/auth-basic-user-file"]; exists {
+		ingCfg.AuthBasicUserFile = authBasicUserFile
+	}
+
 	return ingCfg
 }
 
@@ -354,6 +362,8 @@ func getSSLServices(ingEx *IngressEx) map[string]bool {
 
 func createLocation(path string, upstream Upstream, cfg *Config, websocket bool, rewrite string, ssl bool) Location {
 	loc := Location{
+		AuthBasic:            cfg.AuthBasic,
+		AuthBasicUserFile:    cfg.AuthBasicUserFile,
 		Path:                 path,
 		Upstream:             upstream,
 		ProxyConnectTimeout:  cfg.ProxyConnectTimeout,
