@@ -16,7 +16,7 @@ metadata:
             set $auth_basic "Restricted";
         }
     nginx.org/server-snippets: |
-        ssl_verify_client: optional;
+        ssl_verify_client optional;
 spec:
   rules:
   - host: cafe.example.com
