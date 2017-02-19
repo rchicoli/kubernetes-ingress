@@ -42,7 +42,7 @@ server {
 
 	{{- if $server.AdditionalConfiguration}}
 	{{range $key, $value := $server.AdditionalConfiguration}}
-	{{$key}} {{$value}};{{end}}
+	{{$value}}{{end}}
 	{{- end}}
 
 	{{range $location := $server.Locations}}

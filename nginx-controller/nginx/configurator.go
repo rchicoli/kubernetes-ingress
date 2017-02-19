@@ -207,25 +207,30 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 		}
 	}
 
-	// ingCfg.AdditionalConfiguration := make(map[string]string)
-	var line []string
-	if additionalConfiguration, exists := ingEx.Ingress.Annotations["nginx.org/additional-configuration"]; exists {
-		for _, v := range strings.Split(additionalConfiguration, "\n") {
-			if v != "" {
-				line = strings.Split(v, ": ")
-				ingCfg.AdditionalConfiguration[line[0]] = line[1]
-			}
+	// var line []string
+	// if additionalConfiguration, exists := ingEx.Ingress.Annotations["nginx.org/additional-configuration"]; exists {
+	// 	for _, v := range strings.Split(additionalConfiguration, "\n") {
+	// 		if v != "" {
+	// 			line = strings.Split(v, ": ")
+	// 			ingCfg.AdditionalConfiguration[line[0]] = line[1]
+	// 		}
+	// 	}
+	// }
+	// if additionalConfiguration, exists, err := GetMapKeyAsMapStringString(ingEx.Ingress.Annotations, "nginx.org/additional-configuration", ingEx.Ingress); exists {
+	// 	if err != nil {
+	// 		glog.Error(err)
+	// 	} else {
+	// 		ingCfg.AdditionalConfiguration = additionalConfiguration
+	// 	}
+	// }
+
+	if additionalConfiguration, exists, err := GetMapKeyAsMapStringString(ingEx.Ingress.Annotations, "nginx.org/additional-configuration", ingEx.Ingress); exists {
+		if err != nil {
+			glog.Error(err)
+		} else {
+			ingCfg.AdditionalConfiguration = additionalConfiguration
 		}
 	}
-
-	// if additionalConfiguration, exists := ingEx.Ingress.Annotations["nginx.org/additional-configuration"]; exists {
-	// 	slice := strings.Split(additionalConfiguration, ": ")
-	// 	ingCfg.AdditionalConfiguration[slice[0]] = slice[1]
-	// }
-	// if str, exists := m[key]; exists {
-	// 	slice := strings.Split(str, ",")
-	// 	return slice, exists, nil
-	// }
 
 	if proxyConnectTimeout, exists := ingEx.Ingress.Annotations["nginx.org/proxy-connect-timeout"]; exists {
 		ingCfg.ProxyConnectTimeout = proxyConnectTimeout

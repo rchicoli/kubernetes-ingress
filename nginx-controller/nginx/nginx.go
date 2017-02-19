@@ -40,7 +40,7 @@ type UpstreamServer struct {
 
 // Server describes an NGINX server
 type Server struct {
-	AdditionalConfiguration map[string]string
+	AdditionalConfiguration map[int]string
 	Name                    string
 	ServerTokens            bool
 	Locations               []Location
