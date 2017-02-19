@@ -40,21 +40,21 @@ type UpstreamServer struct {
 
 // Server describes an NGINX server
 type Server struct {
-	AdditionalConfiguration map[int]string
-	Name                    string
-	ServerTokens            bool
-	Locations               []Location
-	SSL                     bool
-	SSLCertificate          string
-	SSLCertificateKey       string
-	HTTP2                   bool
-	RedirectToHTTPS         bool
-	ProxyProtocol           bool
-	HSTS                    bool
-	HSTSMaxAge              int64
-	HSTSIncludeSubdomains   bool
-	ProxyHideHeaders        []string
-	ProxyPassHeaders        []string
+	ServerSnippets        map[int]string
+	Name                  string
+	ServerTokens          bool
+	Locations             []Location
+	SSL                   bool
+	SSLCertificate        string
+	SSLCertificateKey     string
+	HTTP2                 bool
+	RedirectToHTTPS       bool
+	ProxyProtocol         bool
+	HSTS                  bool
+	HSTSMaxAge            int64
+	HSTSIncludeSubdomains bool
+	ProxyHideHeaders      []string
+	ProxyPassHeaders      []string
 
 	// http://nginx.org/en/docs/http/ngx_http_realip_module.html
 	RealIPHeader    string
@@ -64,6 +64,7 @@ type Server struct {
 
 // Location describes an NGINX location
 type Location struct {
+	LocationSnippets     map[int]string
 	AuthBasic            string
 	AuthBasicUserFile    string
 	Path                 string

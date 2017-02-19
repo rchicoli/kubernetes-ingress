@@ -108,20 +108,20 @@ func (cnf *Configurator) generateNginxCfg(ingEx *IngressEx, pems map[string]stri
 		}
 
 		server := Server{
-			Name:                    serverName,
-			ServerTokens:            ingCfg.ServerTokens,
-			HTTP2:                   ingCfg.HTTP2,
-			RedirectToHTTPS:         ingCfg.RedirectToHTTPS,
-			ProxyProtocol:           ingCfg.ProxyProtocol,
-			HSTS:                    ingCfg.HSTS,
-			HSTSMaxAge:              ingCfg.HSTSMaxAge,
-			HSTSIncludeSubdomains:   ingCfg.HSTSIncludeSubdomains,
-			RealIPHeader:            ingCfg.RealIPHeader,
-			SetRealIPFrom:           ingCfg.SetRealIPFrom,
-			RealIPRecursive:         ingCfg.RealIPRecursive,
-			ProxyHideHeaders:        ingCfg.ProxyHideHeaders,
-			ProxyPassHeaders:        ingCfg.ProxyPassHeaders,
-			AdditionalConfiguration: ingCfg.AdditionalConfiguration,
+			Name:                  serverName,
+			ServerTokens:          ingCfg.ServerTokens,
+			HTTP2:                 ingCfg.HTTP2,
+			RedirectToHTTPS:       ingCfg.RedirectToHTTPS,
+			ProxyProtocol:         ingCfg.ProxyProtocol,
+			HSTS:                  ingCfg.HSTS,
+			HSTSMaxAge:            ingCfg.HSTSMaxAge,
+			HSTSIncludeSubdomains: ingCfg.HSTSIncludeSubdomains,
+			RealIPHeader:          ingCfg.RealIPHeader,
+			SetRealIPFrom:         ingCfg.SetRealIPFrom,
+			RealIPRecursive:       ingCfg.RealIPRecursive,
+			ProxyHideHeaders:      ingCfg.ProxyHideHeaders,
+			ProxyPassHeaders:      ingCfg.ProxyPassHeaders,
+			ServerSnippets:        ingCfg.ServerSnippets,
 		}
 
 		if pemFile, ok := pems[serverName]; ok {
@@ -161,20 +161,20 @@ func (cnf *Configurator) generateNginxCfg(ingEx *IngressEx, pems map[string]stri
 
 	if len(ingEx.Ingress.Spec.Rules) == 0 && ingEx.Ingress.Spec.Backend != nil {
 		server := Server{
-			Name:                    emptyHost,
-			ServerTokens:            ingCfg.ServerTokens,
-			HTTP2:                   ingCfg.HTTP2,
-			RedirectToHTTPS:         ingCfg.RedirectToHTTPS,
-			ProxyProtocol:           ingCfg.ProxyProtocol,
-			HSTS:                    ingCfg.HSTS,
-			HSTSMaxAge:              ingCfg.HSTSMaxAge,
-			HSTSIncludeSubdomains:   ingCfg.HSTSIncludeSubdomains,
-			RealIPHeader:            ingCfg.RealIPHeader,
-			SetRealIPFrom:           ingCfg.SetRealIPFrom,
-			RealIPRecursive:         ingCfg.RealIPRecursive,
-			ProxyHideHeaders:        ingCfg.ProxyHideHeaders,
-			ProxyPassHeaders:        ingCfg.ProxyPassHeaders,
-			AdditionalConfiguration: ingCfg.AdditionalConfiguration,
+			Name:                  emptyHost,
+			ServerTokens:          ingCfg.ServerTokens,
+			HTTP2:                 ingCfg.HTTP2,
+			RedirectToHTTPS:       ingCfg.RedirectToHTTPS,
+			ProxyProtocol:         ingCfg.ProxyProtocol,
+			HSTS:                  ingCfg.HSTS,
+			HSTSMaxAge:            ingCfg.HSTSMaxAge,
+			HSTSIncludeSubdomains: ingCfg.HSTSIncludeSubdomains,
+			RealIPHeader:          ingCfg.RealIPHeader,
+			SetRealIPFrom:         ingCfg.SetRealIPFrom,
+			RealIPRecursive:       ingCfg.RealIPRecursive,
+			ProxyHideHeaders:      ingCfg.ProxyHideHeaders,
+			ProxyPassHeaders:      ingCfg.ProxyPassHeaders,
+			ServerSnippets:        ingCfg.ServerSnippets,
 		}
 
 		if pemFile, ok := pems[emptyHost]; ok {
@@ -224,11 +224,18 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 	// 	}
 	// }
 
-	if additionalConfiguration, exists, err := GetMapKeyAsMapStringString(ingEx.Ingress.Annotations, "nginx.org/additional-configuration", ingEx.Ingress); exists {
+	if serverSnippets, exists, err := GetMapKeyAsMapStringString(ingEx.Ingress.Annotations, "nginx.org/server-snippets", ingEx.Ingress); exists {
 		if err != nil {
 			glog.Error(err)
 		} else {
-			ingCfg.AdditionalConfiguration = additionalConfiguration
+			ingCfg.ServerSnippets = serverSnippets
+		}
+	}
+	if locationSnippets, exists, err := GetMapKeyAsMapStringString(ingEx.Ingress.Annotations, "nginx.org/location-snippets", ingEx.Ingress); exists {
+		if err != nil {
+			glog.Error(err)
+		} else {
+			ingCfg.LocationSnippets = locationSnippets
 		}
 	}
 
@@ -404,6 +411,7 @@ func createLocation(path string, upstream Upstream, cfg *Config, websocket bool,
 		ProxyBuffers:         cfg.ProxyBuffers,
 		ProxyBufferSize:      cfg.ProxyBufferSize,
 		ProxyMaxTempFileSize: cfg.ProxyMaxTempFileSize,
+		LocationSnippets:     cfg.LocationSnippets,
 	}
 
 	return loc

@@ -7,7 +7,7 @@ metadata:
     nginx.org/proxy-read-timeout: "20s"
     nginx.org/client-max-body-size: "4m"
     nginx.org/auth-basic: "off"
-    nginx.org/additional-configuration: |
+    nginx.org/location-snippets: |
         if ($ssl_client_verify = SUCCESS) {
             set $auth_basic off;
         }
@@ -16,6 +16,8 @@ metadata:
         }
         auth_basic            $auth_basic;
         auth_basic_user_file  "/etc/nginx/auth/test";
+    nginx.org/server-snippets: |
+        ssl_verify_client: optional;
 spec:
   rules:
   - host: cafe.example.com
