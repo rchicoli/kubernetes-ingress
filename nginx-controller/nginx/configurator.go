@@ -207,14 +207,14 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 		}
 	}
 
-	if serverSnippets, exists, err := GetMapKeyAsMapStringString(ingEx.Ingress.Annotations, "nginx.org/server-snippets", ingEx.Ingress); exists {
+	if serverSnippets, exists, err := GetMapKeyAsMapIntString(ingEx.Ingress.Annotations, "nginx.org/server-snippets", ingEx.Ingress); exists {
 		if err != nil {
 			glog.Error(err)
 		} else {
 			ingCfg.ServerSnippets = serverSnippets
 		}
 	}
-	if locationSnippets, exists, err := GetMapKeyAsMapStringString(ingEx.Ingress.Annotations, "nginx.org/location-snippets", ingEx.Ingress); exists {
+	if locationSnippets, exists, err := GetMapKeyAsMapIntString(ingEx.Ingress.Annotations, "nginx.org/location-snippets", ingEx.Ingress); exists {
 		if err != nil {
 			glog.Error(err)
 		} else {

@@ -49,8 +49,8 @@ func GetMapKeyAsStringSlice(m map[string]string, key string, context apiObject) 
 	return nil, false, nil
 }
 
-// GetMapKeyAsMapStringString tries to find and parse a key in the map int as string
-func GetMapKeyAsMapStringString(m map[string]string, key string, context apiObject) (map[int]string, bool, error) {
+// GetMapKeyAsMapIntString tries to find and parse a key in the map int as string
+func GetMapKeyAsMapIntString(m map[string]string, key string, context apiObject) (map[int]string, bool, error) {
 	lines := make(map[int]string, len(m[key]))
 	if str, exists := m[key]; exists {
 		for k, v := range strings.Split(str, "\n") {
