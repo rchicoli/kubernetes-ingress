@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       #- image: nginxdemos/nginx-ingress:0.7.0
-      - image: rchicoli/kubernetes-nginx-ingress:0.7.0.4
+      - image: rchicoli/kubernetes-nginx-ingress:0.7.0.5
         imagePullPolicy: Always
         name: nginx-ingress
         ports:

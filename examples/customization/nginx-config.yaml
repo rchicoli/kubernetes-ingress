@@ -32,3 +32,15 @@ data:
   real-ip-header: "proxy_protocol" # default is X-Real-IP. Sets the value of the real_ip_header directive. http://nginx.org/en/docs/http/ngx_http_realip_module.html#real_ip_header
   real-ip-recursive: "True" # default is "False". Enables or disables the real_ip_recursive directive. See http://nginx.org/en/docs/http/ngx_http_realip_module.html#real_ip_recursive
   server-tokens: "False" # default is "True". Enables or disables the server_tokens directive. See http://nginx.org/en/docs/http/ngx_http_core_module.html#server_tokens
+  http-snippets: | # Pipe symbol(|) used for multiple line snippet. Make sure the snippet is not a default value, in order to avoid duplicates.
+    map $uri $new_uri {
+      /old.html /index.html;
+    }
+  server-snippets: | # No default. Pipe symbol(|) used for multiple line snippet. Make sure the snippet is not a default value, in order to avoid duplicates.
+    # Old website redirect
+    if ($new_uri) {
+        rewrite ^ $new_uri permanent;
+    }
+  location-snippets: | # No default. Pipe symbol(|) used for multiple line snippet. Make sure the snippet is not a default value, in order to avoid duplicates.
+    fastcgi_param SCRIPT_FILENAME /home/www/scripts/php$fastcgi_script_name;
+    fastcgi_param QUERY_STRING    $query_string;
