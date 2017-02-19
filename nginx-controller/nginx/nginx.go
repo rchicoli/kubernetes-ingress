@@ -87,6 +87,7 @@ type NginxMainConfig struct {
 	ServerNamesHashMaxSize    string
 	LogFormat                 string
 	HealthStatus              bool
+	HTTPSnippets              map[int]string
 	// http://nginx.org/en/docs/http/ngx_http_ssl_module.html
 	SSLProtocols           string
 	SSLPreferServerCiphers bool

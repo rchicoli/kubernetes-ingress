@@ -207,23 +207,6 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 		}
 	}
 
-	// var line []string
-	// if additionalConfiguration, exists := ingEx.Ingress.Annotations["nginx.org/additional-configuration"]; exists {
-	// 	for _, v := range strings.Split(additionalConfiguration, "\n") {
-	// 		if v != "" {
-	// 			line = strings.Split(v, ": ")
-	// 			ingCfg.AdditionalConfiguration[line[0]] = line[1]
-	// 		}
-	// 	}
-	// }
-	// if additionalConfiguration, exists, err := GetMapKeyAsMapStringString(ingEx.Ingress.Annotations, "nginx.org/additional-configuration", ingEx.Ingress); exists {
-	// 	if err != nil {
-	// 		glog.Error(err)
-	// 	} else {
-	// 		ingCfg.AdditionalConfiguration = additionalConfiguration
-	// 	}
-	// }
-
 	if serverSnippets, exists, err := GetMapKeyAsMapStringString(ingEx.Ingress.Annotations, "nginx.org/server-snippets", ingEx.Ingress); exists {
 		if err != nil {
 			glog.Error(err)
@@ -479,6 +462,7 @@ func (cnf *Configurator) UpdateConfig(config *Config) {
 
 	cnf.config = config
 	mainCfg := &NginxMainConfig{
+		HTTPSnippets:              config.MainHTTPSnippets,
 		ServerNamesHashBucketSize: config.MainServerNamesHashBucketSize,
 		ServerNamesHashMaxSize:    config.MainServerNamesHashMaxSize,
 		LogFormat:                 config.MainLogFormat,
