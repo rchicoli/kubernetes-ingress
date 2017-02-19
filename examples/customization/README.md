@@ -6,6 +6,9 @@ The table below summarizes some of the options. More options (extensions) are av
 
 | Annotation | ConfigMaps Key | Description | Default |
 | ---------- | -------------- | ----------- | ------- |
+| `nginx.org/auth-basic` | `auth-basic` | Sets the value of the [auth_basic](http://nginx.org/en/docs/http/ngx_http_auth_basic_module.html#auth_basic) directive. | N/A |
+| `nginx.org/auth-basic-user-file` | `auth-basic-user-file` | Sets the value of the [auth_basic_user_file](http://nginx.org/en/docs/http/ngx_http_auth_basic_module.html#auth_basic_user_file) directive. | N/A |
+| N/A | `http-snippets` | Sets a custom snippet in http context. | N/A |
 | `nginx.org/proxy-connect-timeout` | `proxy-connect-timeout` | Sets the value of the [proxy_connect_timeout](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_connect_timeout) directive. | `60s` |
 | `nginx.org/proxy-read-timeout` | `proxy-read-timeout` | Sets the value of the [proxy_read_timeout](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_read_timeout) directive. | `60s` |
 | `nginx.org/client-max-body-size` | `client-max-body-size` | Sets the value of the [client_max_body_size](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size) directive. | `1m` |
@@ -19,11 +22,13 @@ The table below summarizes some of the options. More options (extensions) are av
 | N/A | `server-names-hash-max-size` | Sets the value of the [server_names_hash_max_size](http://nginx.org/en/docs/http/ngx_http_core_module.html#server_names_hash_max_size) directive. | `512` |
 | `nginx.org/http2` | `http2` | Enables HTTP/2 in servers with SSL enabled. To support HTTP/2 for Chrome users, use the provided controller image based on the alpine Linux. It includes OpenSSL with ALPN support, [necessary for Chrome users](https://www.nginx.com/blog/supporting-http2-google-chrome-users/). | `False` |
 | `nginx.org/redirect-to-https` | `redirect-to-https` | Sets the 301 redirect rule based on the value of the `http_x_forwarded_proto` header on the server block to force incoming traffic to be over HTTPS. Useful when terminating SSL in a load balancer in front of the Ingress controller — see [115](https://github.com/nginxinc/kubernetes-ingress/issues/115) | `False` |
+| `nginx.org/location-snippets` | `location-snippets` | Sets a custom snippet in location context. | N/A |
 | N/A | `log-format` | Sets the custom [log format](http://nginx.org/en/docs/http/ngx_http_log_module.html#log_format).  | See the [template file](../../nginx-controller/nginx/nginx.conf.tmpl). |  
 | `nginx.org/hsts` | `hsts` | Enables [HTTP Strict Transport Security (HSTS)](https://www.nginx.com/blog/http-strict-transport-security-hsts-and-nginx/): the HSTS header is added to the responses from backends. The `preload` directive is included in the header. | `False` |
 | `nginx.org/hsts-max-age` | `hsts-max-age` | Sets the value of the `max-age` directive of the HSTS header. | `2592000` (1 month) |
 | `nginx.org/hsts-include-subdomains` | `hsts-include-subdomains` | Adds the `includeSubDomains` directive to the HSTS header. | `False`|
-| N/A | `ssl-protocols` | Sets the value of the [ssl_protocols](http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_protocols) directive. | `TLSv1 TLSv1.1 TLSv1.2`|
+| `nginx.org/server-snippets` | `server-snippets` | Sets a custom snippet in server context. | N/A |
+| N/A | `ssl-protocols` | Sets the value of the [ssl_protocols](http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_protocols) directive. | `TLSv1TLSv1.1 TLSv1.2`|
 | N/A | `ssl-prefer-server-cipher` | Enables or disables the [ssl_prefer_server_ciphers](http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_prefer_server_ciphers) directive. | `False`|
 | N/A | `ssl-ciphers` | Sets the value of the [ssl_ciphers](http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_ciphers) directive. | `HIGH:!aNULL:!MD5`|
 | N/A | `ssl-dhparam-file` | Sets the content of the dhparam file. The controller will create the file and set the value of the [ssl_dhparam](http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_dhparam) directive with the path of the file.  | N/A|
