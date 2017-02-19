@@ -12,6 +12,7 @@ type Config struct {
 	ClientMaxBodySize             string
 	HTTP2                         bool
 	RedirectToHTTPS               bool
+	MainHTTPSnippets              map[int]string
 	MainServerNamesHashBucketSize string
 	MainServerNamesHashMaxSize    string
 	MainLogFormat                 string
@@ -50,5 +51,6 @@ func NewDefaultConfig() *Config {
 		HSTSMaxAge:                 2592000,
 		LocationSnippets:           make(map[int]string),
 		ServerSnippets:             make(map[int]string),
+		MainHTTPSnippets:           make(map[int]string),
 	}
 }

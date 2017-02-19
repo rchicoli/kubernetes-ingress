@@ -523,10 +523,28 @@ func (lbc *LoadBalancerController) syncCfgm(key string) {
 			cfg.AuthBasicUserFile = authBasicUserFile
 		}
 
-		// if additionalConfiguration, exists := cfgm.Data["additional-configuration"]; exists {
-		// 	slice := strings.Split(additionalConfiguration, ": ")
-		// 	cfg.AdditionalConfiguration[slice[0]] = slice[1]
-		// }
+		if mainHTTPSnippets, exists, err := nginx.GetMapKeyAsMapStringString(cfgm.Data, "http-snippets", cfgm); exists {
+			if err != nil {
+				glog.Error(err)
+			} else {
+				cfg.MainHTTPSnippets = mainHTTPSnippets
+			}
+		}
+		if locationSnippets, exists, err := nginx.GetMapKeyAsMapStringString(cfgm.Data, "location-snippets", cfgm); exists {
+			if err != nil {
+				glog.Error(err)
+			} else {
+				cfg.LocationSnippets = locationSnippets
+			}
+		}
+		if serverSnippets, exists, err := nginx.GetMapKeyAsMapStringString(cfgm.Data, "server-snippets", cfgm); exists {
+			if err != nil {
+				glog.Error(err)
+			} else {
+				cfg.ServerSnippets = serverSnippets
+			}
+		}
+
 	}
 	lbc.cnf.UpdateConfig(cfg)
 
