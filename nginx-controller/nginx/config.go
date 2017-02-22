@@ -4,8 +4,6 @@ package nginx
 type Config struct {
 	LocationSnippets              []string
 	ServerSnippets                []string
-	AuthBasic                     string
-	AuthBasicUserFile             string
 	ServerTokens                  bool
 	ProxyConnectTimeout           string
 	ProxyReadTimeout              string
