@@ -182,7 +182,7 @@ func TestGetMapKeyAsStringSliceNotFound(t *testing.T) {
 	configMap := configMap
 	configMap.Data = map[string]string{}
 
-	_, exists, _ := GetMapKeyAsStringSlice(configMap.Data, "key", &configMap)
+	_, exists, _ := GetMapKeyAsStringSlice(configMap.Data, "key", &configMap, ",")
 	if exists {
 		t.Errorf("The key 'key' must not exist in the configMap")
 	}
