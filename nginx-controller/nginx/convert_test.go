@@ -164,7 +164,7 @@ func TestGetMapKeyAsStringSlice(t *testing.T) {
 		"key": "1.String,2.String,3.String",
 	}
 
-	slice, exists, err := GetMapKeyAsStringSlice(configMap.Data, "key", &configMap)
+	slice, exists, err := GetMapKeyAsStringSlice(configMap.Data, "key", &configMap, ",")
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}

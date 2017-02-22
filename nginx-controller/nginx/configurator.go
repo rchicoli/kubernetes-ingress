@@ -207,14 +207,14 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 		}
 	}
 
-	if serverSnippets, exists, err := GetMapKeyAsMapIntString(ingEx.Ingress.Annotations, "nginx.org/server-snippets", ingEx.Ingress); exists {
+	if serverSnippets, exists, err := GetMapKeyAsStringSlice(ingEx.Ingress.Annotations, "nginx.org/server-snippets", ingEx.Ingress, "\n"); exists {
 		if err != nil {
 			glog.Error(err)
 		} else {
 			ingCfg.ServerSnippets = serverSnippets
 		}
 	}
-	if locationSnippets, exists, err := GetMapKeyAsMapIntString(ingEx.Ingress.Annotations, "nginx.org/location-snippets", ingEx.Ingress); exists {
+	if locationSnippets, exists, err := GetMapKeyAsStringSlice(ingEx.Ingress.Annotations, "nginx.org/location-snippets", ingEx.Ingress, "\n"); exists {
 		if err != nil {
 			glog.Error(err)
 		} else {
@@ -228,14 +228,14 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 	if proxyReadTimeout, exists := ingEx.Ingress.Annotations["nginx.org/proxy-read-timeout"]; exists {
 		ingCfg.ProxyReadTimeout = proxyReadTimeout
 	}
-	if proxyHideHeaders, exists, err := GetMapKeyAsStringSlice(ingEx.Ingress.Annotations, "nginx.org/proxy-hide-headers", ingEx.Ingress); exists {
+	if proxyHideHeaders, exists, err := GetMapKeyAsStringSlice(ingEx.Ingress.Annotations, "nginx.org/proxy-hide-headers", ingEx.Ingress, ","); exists {
 		if err != nil {
 			glog.Error(err)
 		} else {
 			ingCfg.ProxyHideHeaders = proxyHideHeaders
 		}
 	}
-	if proxyPassHeaders, exists, err := GetMapKeyAsStringSlice(ingEx.Ingress.Annotations, "nginx.org/proxy-pass-headers", ingEx.Ingress); exists {
+	if proxyPassHeaders, exists, err := GetMapKeyAsStringSlice(ingEx.Ingress.Annotations, "nginx.org/proxy-pass-headers", ingEx.Ingress, ","); exists {
 		if err != nil {
 			glog.Error(err)
 		} else {
@@ -308,13 +308,6 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 		ingCfg.ProxyMaxTempFileSize = proxyMaxTempFileSize
 	}
 
-	if authBasic, exists := ingEx.Ingress.Annotations["nginx.org/auth-basic"]; exists {
-		ingCfg.AuthBasic = authBasic
-	}
-	if authBasicUserFile, exists := ingEx.Ingress.Annotations["nginx.org/auth-basic-user-file"]; exists {
-		ingCfg.AuthBasicUserFile = authBasicUserFile
-	}
-
 	return ingCfg
 }
 
@@ -380,8 +373,6 @@ func getSSLServices(ingEx *IngressEx) map[string]bool {
 
 func createLocation(path string, upstream Upstream, cfg *Config, websocket bool, rewrite string, ssl bool) Location {
 	loc := Location{
-		AuthBasic:            cfg.AuthBasic,
-		AuthBasicUserFile:    cfg.AuthBasicUserFile,
 		Path:                 path,
 		Upstream:             upstream,
 		ProxyConnectTimeout:  cfg.ProxyConnectTimeout,

@@ -40,23 +40,23 @@ func GetMapKeyAsInt(m map[string]string, key string, context apiObject) (int64, 
 	return 0, false, nil
 }
 
-// GetMapKeyAsStringSlice tries to find and parse a key in the map as string slice splitting it on ','
-func GetMapKeyAsStringSlice(m map[string]string, key string, context apiObject) ([]string, bool, error) {
+// GetMapKeyAsStringSlice tries to find and parse a key in the map as string slice splitting it on delimiter
+func GetMapKeyAsStringSlice(m map[string]string, key string, context apiObject, delimiter string) ([]string, bool, error) {
 	if str, exists := m[key]; exists {
-		slice := strings.Split(str, ",")
+		slice := strings.Split(str, delimiter)
 		return slice, exists, nil
 	}
 	return nil, false, nil
 }
 
-// GetMapKeyAsMapIntString tries to find and parse a key in the map int as string
-func GetMapKeyAsMapIntString(m map[string]string, key string, context apiObject) (map[int]string, bool, error) {
-	lines := make(map[int]string, len(m[key]))
-	if str, exists := m[key]; exists {
-		for k, v := range strings.Split(str, "\n") {
-			lines[k] = v
-		}
-		return lines, exists, nil
-	}
-	return nil, false, nil
-}
+// // GetMapKeyAsMapIntString tries to find and parse a key in the map int as string
+// func GetMapKeyAsMapIntString(m map[string]string, key string, context apiObject) ([]string, bool, error) {
+// 	lines := make(map[int]string, len(m[key]))
+// 	if str, exists := m[key]; exists {
+// 		for k, v := range strings.Split(str, "\n") {
+// 			lines[k] = v
+// 		}
+// 		return lines, exists, nil
+// 	}
+// 	return nil, false, nil
+// }
