@@ -307,7 +307,6 @@ func (cnf *Configurator) createConfig(ingEx *IngressEx) Config {
 	if proxyMaxTempFileSize, exists := ingEx.Ingress.Annotations["nginx.org/proxy-max-temp-file-size"]; exists {
 		ingCfg.ProxyMaxTempFileSize = proxyMaxTempFileSize
 	}
-
 	return ingCfg
 }
 
